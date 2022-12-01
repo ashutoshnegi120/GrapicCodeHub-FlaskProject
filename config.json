@@ -1,0 +1,8 @@
+{
+    "params":
+    {
+        "local_host" :"mysql://root:@localhost/gech",
+        "public_host" :"mysql://root:@localhost/gech"
+
+    }
+}

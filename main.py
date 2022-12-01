@@ -1,19 +1,26 @@
 from flask import Flask , render_template,request
 from flask_sqlalchemy import SQLAlchemy
+import json
 
+with open("config.json",'r') as config:
+    para = json.load(config)['params']
 
+local_server = True
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/gech'
+if(local_server):
+    app.config['SQLALCHEMY_DATABASE_URI'] = para["local_host"]
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = para["public_host"]
 #app.config['SQLALCHEMY_BINDS'] = False
 db = SQLAlchemy(app)
 
 
 class Register(db.Model):
     SNo = db.Column(db.Integer,primary_key = True)
-    name = db.Column(db.String(50),nullable = True)
-    email = db.Column(db.String(50),nullable = True)
-    username = db.Column(db.String(50),nullable = True)
-    password = db.Column(db.String(50),nullable = True)
+    name = db.Column(db.String(50),nullable = False)
+    email = db.Column(db.String(50),nullable =False)
+    username = db.Column(db.String(50),nullable = False)
+    password = db.Column(db.String(50),nullable = False)
 
 
 @app.route('/')
