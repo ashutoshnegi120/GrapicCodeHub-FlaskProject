@@ -24,6 +24,9 @@ class Register(db.Model):
     email = db.Column(db.String(50),nullable =False)
     username = db.Column(db.String(50),nullable = False)
     password = db.Column(db.String(50),nullable = False)
+    rank = db.Column(db.String(50),nullable = False)
+    no_of_post = db.Column(db.String(50),nullable = False)
+    no_of_answer = db.Column(db.String(50),nullable = False)
 
 
 @app.route('/',methods =['GET','POST'])
@@ -42,7 +45,6 @@ def page_login():
 
 @app.route('/home')
 def Home():
-    print(username)
     posts = Register.query.filter_by(username = username).first()
     return render_template("home.html",post = posts)
 
@@ -62,6 +64,12 @@ def page_register():
             return render_template("pages-register.html")
         
     return render_template("pages-register.html")
+
+
+@app.route('/home/profile')
+def profile():
+    posts = Register.query.filter_by(username = username).first()
+    return render_template('profile.html',post = posts)
         
         
 if __name__ =="__main__":
