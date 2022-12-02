@@ -3,8 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user,LoginManager,login_required,logout_user,current_user
 import json
 
-
-user_name = ""
+log_in = 0
 
 with open("config.json",'r') as config:
     para = json.load(config)['params']
@@ -30,18 +29,22 @@ class Register(db.Model):
 @app.route('/',methods =['GET','POST'])
 def page_login():
     if(request.method == 'POST'):
+        global username 
         username = request.form.get("username")
         password = request.form.get("password")
         user = Register.query.filter_by(username = username).first()
         if(user):
             if(user.password == password):
-                user_name = username
+                log_in = 1
+                post = Register.query.filter_by(username = username).first()
                 return redirect(url_for("Home"))
     return render_template("pages-login.html")
 
-@app.route('/home', methods =['GET','POST'])
+@app.route('/home')
 def Home():
-    return render_template("home.html")
+    print(username)
+    posts = Register.query.filter_by(username = username).first()
+    return render_template("home.html",post = posts)
 
 
 
