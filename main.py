@@ -79,20 +79,51 @@ def page_register():
     return render_template("pages-register.html")
 
 
-@app.route('/home/profile')
+@app.route('/home/profile',methods = ['GET','POST'])
 def profile():
     username = u_name
     posts = Register.query.filter_by(username = username).first()
     profile = Profile.query.filter_by(username = username ).first()
+    if(request.method == 'POST'):
+        if('edit' in request.form ):
+            posts.name =  request.form.get("fullName")
+            profile.about =  request.form.get("about")
+            profile.job = request.form.get("country")
+            profile.phone = request.form.get("phone")
+            posts.email = request.form.get("email")
+            profile.t_h = request.form.get("twitter")
+            profile.fb_h = request.form.get("facebook")
+            profile.insta_h= request.form.get("instagram")
+            profile.linkd_h = request.form.get("linkedin")
+            try:
+                db.session.commit()
+            except:
+                return "somting Wrong!!!!"
     return render_template('profile.html',post = posts,profile = profile)
 
 
-@app.route('/home/setting')
-@app.route('/home/setting/<id>')
+@app.route('/home/setting',methods = ['GET','POST'])
 def setting(id = None):
     posts = Register.query.filter_by(username = u_name).first()
     profile = Profile.query.filter_by(username = u_name ).first()
-    return render_template('setting.html',post = posts,profile = profile, id = 'profile-edit')
+    if(request.method == 'POST'):
+        if('edit' in request.form ):
+            posts.name =  request.form.get("fullName")
+            profile.about =  request.form.get("about")
+            profile.job = request.form.get("country")
+            profile.phone = request.form.get("phone")
+            posts.email = request.form.get("email")
+            profile.t_h = request.form.get("twitter")
+            profile.fb_h = request.form.get("facebook")
+            profile.insta_h= request.form.get("instagram")
+            profile.linkd_h = request.form.get("linkedin")
+            try:
+                db.session.commit()
+            except:
+                return "somting Wrong!!!!"
+          
+            
+    return render_template('setting.html',post = posts,profile = profile)
         
         
 if __name__ =="__main__":
