@@ -2,7 +2,15 @@
     "params":
     {
         "local_host" :"mysql://root:@localhost/gech",
-        "public_host" :"mysql://root:@localhost/gech"
-
+        "public_host" :"mysql://root:@localhost/gech",
+        "def_about":"--------//(-_-)\\--------",
+        "image" :"def",
+        "linkd_h" : "#",
+        "fb_h" : "#",
+        "insta_h" :"#",
+        "t_h": "#",
+        "country_def" : "None",
+        "job" : "Student",
+        "phone":1234567890
     }
 }
