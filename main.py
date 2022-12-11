@@ -26,6 +26,20 @@ class Register(db.Model):
     username = db.Column(db.String(50),nullable = False)
     password = db.Column(db.String(50),nullable = False)
     
+class Post(db.Model):
+    SNo = db.Column(db.Integer,primary_key = True)
+    post_id = db.Column(db.String(50),nullable = False)
+    question = db.Column(db.String(100000),nullable = False)
+    date = db.Column(db.String(50),nullable = False)
+    name = db.Column(db.String(50),nullable = False)
+    username = db.Column(db.String(50),nullable = False)
+class Comment(db.Model):
+    SNo = db.Column(db.Integer,primary_key = True)
+    comment_id= db.Column(db.String(50),nullable = False)
+    post_id_store = db.Column(db.String(100),nullable = False)
+    comment_line = db.Column(db.String(500000),nullable = False)
+    name = db.Column(db.String(50),nullable = False)
+    date = db.Column(db.String(50),nullable = False)
     
 class Profile(db.Model):
     SNo = db.Column(db.Integer,primary_key = True)
@@ -56,7 +70,8 @@ def page_login():
 @app.route('/home')
 def Home():
     posts = Register.query.filter_by(username = u_name).first()
-    return render_template("home.html",post = posts)
+    list_post = Post.query.filter_by().all()
+    return render_template("home.html",post = posts, list_post = list_post)
 
 
 
@@ -120,11 +135,21 @@ def setting(id = None):
             try:
                 db.session.commit()
             except:
-                return "somting Wrong!!!!"
-          
-            
+                return "somting Wrong!!!!"        
     return render_template('setting.html',post = posts,profile = profile)
         
-        
+@app.route('/home/<string:post_id>',methods = ['GET'])
+def post_display(post_id):
+    posts = Register.query.filter_by(username = u_name).first()
+    post_dit = Post.query.filter_by(post_id = post_id).first()
+    return render_template("post_comment.html",post = posts,postDisplay = post_dit)    
+
+@app.route('/home/post/<string:post_id>',methods = ['GET'])
+def post_display_comment(post_id):
+    posts = Register.query.filter_by(username = u_name).first()
+    post_dit = Post.query.filter_by(post_id = post_id).first()
+    comment_dit = Comment.query.filter_by(post_id_store = post_id).all()
+    return render_template("post_with_othercomment.html",post = posts,postDisplay = post_dit,comment = comment_dit)
+
 if __name__ =="__main__":
     app.run(debug=True)
