@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user,LoginManager,login_required,logout_user,current_user
 import json
 import os
-
+import random
+import datetime
 log_in = 0
 
 with open("config.json",'r') as config:
@@ -150,6 +151,22 @@ def post_display_comment(post_id):
     post_dit = Post.query.filter_by(post_id = post_id).first()
     comment_dit = Comment.query.filter_by(post_id_store = post_id).all()
     return render_template("post_with_othercomment.html",post = posts,postDisplay = post_dit,comment = comment_dit)
+
+@app.route('/home/add_POST',methods =['GET','POST'])
+def add_POST():
+    posts = Register.query.filter_by(username = u_name).first()
+    if(request.method == 'POST'):
+        title = Register.query.filter_by(username = u_name).first().username +'@'+request.form.get('Title')+'Title'+str(random.random())
+        while(Post.query.filter_by(post_id = title).first()):
+            title = Register.query.filter_by(username = u_name).first() +'@'+request.form.get('Title')+'Title'+str(random.random())
+        Q = request.form.get("que")
+        date = datetime.datetime.now().strftime('%y-%m-%d')
+        entry = Post(name = posts.name,username =posts.username,post_id =title ,question =Q,date = date)
+        db.session.add(entry)
+        db.session.commit()
+        return redirect(url_for('Home'))
+        
+    return render_template("add_post.html",post = posts)
 
 if __name__ =="__main__":
     app.run(debug=True)
