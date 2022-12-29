@@ -71,8 +71,9 @@ def page_login():
 @app.route('/home')
 def Home():
     posts = Register.query.filter_by(username = u_name).first()
+    profile = Profile.query.filter_by(username = u_name ).first()
     list_post = Post.query.filter_by().all()
-    return render_template("home.html",post = posts, list_post = list_post)
+    return render_template("home.html",post = posts, list_post = list_post,profile = profile.image)
 
 
 
@@ -84,7 +85,10 @@ def page_register():
         username = request.form.get('username')
         pword = request.form.get('password')
         if(Name != '' and email !='' and username != '' and pword !=''):
-            def_set = Profile(username = username,about = para["def_about"],job = para["job"],country = para["country_def"],phone = para["phone"],t_h = para["t_h"],insta_h=para["insta_h"],fb_h=para["fb_h"],linkd_h=para["linkd_h"],image =para["image"])
+            dir_path =".\\static\\icon\\"
+            res = os.listdir(dir_path)
+            l = random.choice(res)
+            def_set = Profile(username = username,about = para["def_about"],job = para["job"],country = para["country_def"],phone = para["phone"],t_h = para["t_h"],insta_h=para["insta_h"],fb_h=para["fb_h"],linkd_h=para["linkd_h"],image =l)
             entry = Register(name = Name, email = email, username = username,password = pword)
             db.session.add(entry)
             db.session.commit()
@@ -104,7 +108,8 @@ def profile():
         if('edit' in request.form ):
             posts.name =  request.form.get("fullName")
             profile.about =  request.form.get("about")
-            profile.job = request.form.get("country")
+            profile.job = request.form.get("job")
+            profile.country = request.form.get("country")
             profile.phone = request.form.get("phone")
             posts.email = request.form.get("email")
             profile.t_h = request.form.get("twitter")
@@ -126,7 +131,8 @@ def setting(id = None):
         if('edit' in request.form ):
             posts.name =  request.form.get("fullName")
             profile.about =  request.form.get("about")
-            profile.job = request.form.get("country")
+            profile.job = request.form.get("job")
+            profile.country = request.form.get("country")
             profile.phone = request.form.get("phone")
             posts.email = request.form.get("email")
             profile.t_h = request.form.get("twitter")
@@ -143,18 +149,21 @@ def setting(id = None):
 def post_display(post_id):
     posts = Register.query.filter_by(username = u_name).first()
     post_dit = Post.query.filter_by(post_id = post_id).first()
-    return render_template("post_comment.html",post = posts,postDisplay = post_dit)    
+    profile = Profile.query.filter_by(username = u_name ).first()
+    return render_template("post_comment.html",post = posts,postDisplay = post_dit,profile=profile)    
 
 @app.route('/home/post/<string:post_id>',methods = ['GET'])
 def post_display_comment(post_id):
     posts = Register.query.filter_by(username = u_name).first()
+    profile = Profile.query.filter_by(username = u_name ).first()
     post_dit = Post.query.filter_by(post_id = post_id).first()
     comment_dit = Comment.query.filter_by(post_id_store = post_id).all()
-    return render_template("post_with_othercomment.html",post = posts,postDisplay = post_dit,comment = comment_dit)
+    return render_template("post_with_othercomment.html",post = posts,postDisplay = post_dit,comment = comment_dit,profile = profile)
 
 @app.route('/home/add_POST',methods =['GET','POST'])
 def add_POST():
     posts = Register.query.filter_by(username = u_name).first()
+    profile = Profile.query.filter_by(username = u_name ).first()
     if(request.method == 'POST'):
         title = Register.query.filter_by(username = u_name).first().username +'@'+request.form.get('Title')+'Title'+str(random.random())
         while(Post.query.filter_by(post_id = title).first()):
@@ -166,7 +175,30 @@ def add_POST():
         db.session.commit()
         return redirect(url_for('Home'))
         
-    return render_template("add_post.html",post = posts)
+    return render_template("add_post.html",post = posts,profile = profile)
+
+
+@app.route('/home/profile/<string:name>')
+def profile_other(name):
+    print(name)
+    posts = Register.query.filter_by(username = u_name).first()
+    profile = Profile.query.filter_by(username = u_name ).first()
+    other_posts = Register.query.filter_by(username = name).first()
+    other_profile = Profile.query.filter_by(username = name).first()
+    return render_template('visite_profile_of_other.html',post = posts,profile = profile,other_posts = other_posts , other_profile = other_profile)
+
+@app.route('/SignOut')
+def signOut():
+    u_name = None
+    return redirect(url_for("page_login"))
+
+@app.route('/home/my_POST')
+def my_post():
+    posts = Register.query.filter_by(username = u_name).first()
+    list_post = Post.query.filter_by(username = u_name).all()
+    profile = Profile.query.filter_by(username = u_name ).first()
+    total = len(list_post)
+    return render_template("my_post.html",post = posts, list_post = list_post,Total = total,profile = profile)  
 
 if __name__ =="__main__":
     app.run(debug=True)

@@ -1,0 +1,43 @@
+  
+  {% extends "layout.html" %}  
+      
+  {% block body %}
+
+
+  <div class="container bootdey">
+    <div class="col-md-12 bootstrap snippets">
+    <div class="panel">
+      <div class="panel-body">
+        <div class="mar-top clearfix">
+          <h1>Total post = {{Total}}</h1>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="panel">
+      <div class="panel-body">
+        <!-- Newsfeed Content -->
+        <!--===================================================-->
+        {%for post_line in list_post %}
+        <div class="media-block">
+          <a class="media-left" href="/home/profile/{{post_line.username}}"><img class="rounded-circle" width = '50' height ='50' alt="Profile Picture" src="https://bootdey.com/img/Content/avatar/avatar1.png"></a>
+          <div class="media-body">
+            <div class="mar-btm">
+              <a href="/home/profile/{{post_line.username}}" class="btn-link text-semibold media-heading box-inline">{{post_line.name}}</a>
+              <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> - From WEB - {{post_line.date}}</p>
+            </div>
+            <p>{{post_line.question}}</p>
+            <div class="pad-ver">
+              <div class="btn-group">
+                <a class="btn btn-sm btn-default btn-hover-success" href="#"><i class="fa fa-thumbs-up"></i></a>
+                <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
+              </div>
+              <a class="btn btn-sm btn-default btn-hover-primary" href="/home/{{post_line.post_id}}">View</a>
+            </div>
+            <hr>
+          </div>
+        </div>
+        {%endfor%}
+      </div>  
+    </div>
+    {% endblock %}
