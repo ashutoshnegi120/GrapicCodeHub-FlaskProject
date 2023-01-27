@@ -34,6 +34,7 @@ class Post(db.Model):
     date = db.Column(db.String(50),nullable = False)
     name = db.Column(db.String(50),nullable = False)
     username = db.Column(db.String(50),nullable = False)
+    img = db.Column(db.String(1000),nullable = False)
 class Comment(db.Model):
     SNo = db.Column(db.Integer,primary_key = True)
     comment_id= db.Column(db.String(50),nullable = False)
@@ -41,6 +42,7 @@ class Comment(db.Model):
     comment_line = db.Column(db.String(500000),nullable = False)
     name = db.Column(db.String(50),nullable = False)
     date = db.Column(db.String(50),nullable = False)
+    img = db.Column(db.String(1000),nullable = False)
     
 class Profile(db.Model):
     SNo = db.Column(db.Integer,primary_key = True)
@@ -73,7 +75,7 @@ def Home():
     posts = Register.query.filter_by(username = u_name).first()
     profile = Profile.query.filter_by(username = u_name ).first()
     list_post = Post.query.filter_by().all()
-    return render_template("home.html",post = posts, list_post = list_post,profile = profile.image)
+    return render_template("home.html",post = posts, list_post = list_post,profile = profile)
 
 
 
@@ -170,7 +172,7 @@ def add_POST():
             title = Register.query.filter_by(username = u_name).first() +'@'+request.form.get('Title')+'Title'+str(random.random())
         Q = request.form.get("que")
         date = datetime.datetime.now().strftime('%y-%m-%d')
-        entry = Post(name = posts.name,username =posts.username,post_id =title ,question =Q,date = date)
+        entry = Post(name = posts.name,username =posts.username,post_id =title ,question =Q,date = date,img = profile.image)
         db.session.add(entry)
         db.session.commit()
         return redirect(url_for('Home'))
@@ -180,7 +182,7 @@ def add_POST():
 
 @app.route('/home/profile/<string:name>')
 def profile_other(name):
-    print(name)
+    #print(name)
     posts = Register.query.filter_by(username = u_name).first()
     profile = Profile.query.filter_by(username = u_name ).first()
     other_posts = Register.query.filter_by(username = name).first()

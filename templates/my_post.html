@@ -20,7 +20,7 @@
         <!--===================================================-->
         {%for post_line in list_post %}
         <div class="media-block">
-          <a class="media-left" href="/home/profile/{{post_line.username}}"><img class="rounded-circle" width = '50' height ='50' alt="Profile Picture" src="https://bootdey.com/img/Content/avatar/avatar1.png"></a>
+          <a class="media-left" href="/home/profile/{{post_line.username}}"><img class="rounded-circle" width = '50' height ='50' alt="Profile Picture" src="/static/icon/{{profile.image}}.png"></a>
           <div class="media-body">
             <div class="mar-btm">
               <a href="/home/profile/{{post_line.username}}" class="btn-link text-semibold media-heading box-inline">{{post_line.name}}</a>
