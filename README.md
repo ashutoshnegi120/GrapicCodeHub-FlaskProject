@@ -71,4 +71,4 @@ This project is licensed under the [MIT License].
 
 ## Contact
 
-For any inquiries or feedback related to this personal project, please contact me at [your-email@example.com].
+For any inquiries or feedback related to this personal project, please contact me at [ashutoshnegisgrr@gmail.com].
