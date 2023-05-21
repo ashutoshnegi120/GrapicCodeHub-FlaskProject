@@ -67,7 +67,7 @@ As this is a personal project, I am not actively seeking contributions. However,
 
 ## License
 
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+This project is licensed under the [MIT License].
 
 ## Contact
 
